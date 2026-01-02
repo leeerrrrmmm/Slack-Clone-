@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "477363753990",
+    "project_id": "slack-bdb50",
+    "storage_bucket": "slack-bdb50.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477363753990:android:7a2ea9a488d264bcb99f87",
+        "android_client_info": {
+          "package_name": "com.example.slaac"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIBzqSIEPuZ5YqYFld2B0Tmg9cDX4KdQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
