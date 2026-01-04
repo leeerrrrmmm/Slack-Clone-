@@ -3,9 +3,9 @@ import 'package:slaac/view/dirrect/widgets/d_ms_list.dart';
 import 'package:slaac/view/dirrect/widgets/top_user_list.dart';
 
 /// DirrectMainInfoWidget is the widget that displays the main information of the dirrect screen. */
-class DirrectMainInfoWidget extends StatelessWidget {
+class DirrectInfoMainWidget extends StatelessWidget {
   /// Constructs a new DirrectMainInfoWidget.
-  const DirrectMainInfoWidget({
+  const DirrectInfoMainWidget({
     super.key,
   });
 

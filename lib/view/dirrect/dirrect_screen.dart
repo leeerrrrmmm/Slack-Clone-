@@ -33,6 +33,7 @@ class _DirrectScreenState extends State<DirrectScreen> {
                   color: Colors.white,
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Out',
                 ),
               ),
               actions: [
@@ -40,7 +41,7 @@ class _DirrectScreenState extends State<DirrectScreen> {
               ],
             ),
 
-            DirrectMainInfoWidget(),
+            DirrectInfoMainWidget(),
           ],
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:slaac/view/home/home_screen.dart';
+import 'package:slaac/view/bottom_bar/bottom_bar_widget.dart';
 import 'package:slaac/view/onboarding/onboarding_screen.dart';
 
 /// ReadyToLaunchScreen is the screen that displays the ready to launch screen.
@@ -83,7 +83,9 @@ class _ReadyToLaunchScreenState extends State<ReadyToLaunchScreen> {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (_) => const HomeScreen()),
+                        MaterialPageRoute(
+                          builder: (_) => const BottomBarWidget(),
+                        ),
                       );
                     },
                     style: TextButton.styleFrom(

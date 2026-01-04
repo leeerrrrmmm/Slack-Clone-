@@ -13,6 +13,7 @@ class SlackApp extends StatelessWidget {
       title: 'Slack App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Out',
       ),
       //TODO: Change to OnboardingScreen when it is implemented
       home: const BottomBarWidget(),

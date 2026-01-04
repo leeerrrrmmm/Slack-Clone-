@@ -31,6 +31,7 @@ class ReactionsInfoWidget extends StatelessWidget {
           style: const TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.bold,
+            fontFamily: 'Out',
           ),
         ),
         Column(
@@ -42,6 +43,7 @@ class ReactionsInfoWidget extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
+                fontFamily: 'Out',
               ),
             ),
             Column(
@@ -54,6 +56,7 @@ class ReactionsInfoWidget extends StatelessWidget {
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                     color: Colors.grey[600],
+                    fontFamily: 'Out',
                   ),
                 ),
                 Container(

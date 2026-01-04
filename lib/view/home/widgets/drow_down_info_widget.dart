@@ -44,6 +44,7 @@ class _DrowDownInfoWidgetState extends State<DrowDownInfoWidget> {
         style: const TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
+          fontFamily: 'Out',
         ),
       ),
       children: List.generate(
@@ -81,6 +82,7 @@ class _DrowDownInfoWidgetState extends State<DrowDownInfoWidget> {
                     widget.info,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Out',
                     ),
                   ),
                 ],
@@ -103,6 +105,7 @@ class _DrowDownInfoWidgetState extends State<DrowDownInfoWidget> {
                           color: Colors.white,
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
+                          fontFamily: 'Out',
                         ),
                       ),
                     ),

@@ -50,6 +50,7 @@ class MoreInfoActionsWidget extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
+                      fontFamily: 'Out',
                     ),
                   ),
                   Text(
@@ -57,6 +58,7 @@ class MoreInfoActionsWidget extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
+                      fontFamily: 'Out',
                     ),
                   ),
                 ],
@@ -76,12 +78,13 @@ class MoreInfoActionsWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Center(
-              child: Text(
+                          child: Text(
                 'PRO ',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
+                  fontFamily: 'Out',
                 ),
               ),
             ),

@@ -52,9 +52,15 @@ class TopInfoWidget extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
+                fontFamily: 'Out',
               ),
             ),
-            Text(number),
+            Text(
+              number,
+              style: const TextStyle(
+                fontFamily: 'Out',
+              ),
+            ),
           ],
         ),
       ),

@@ -132,13 +132,17 @@ class _MainInfoWidgetState extends State<MainInfoWidget> {
                     children: [
                       Text(
                         'Next you could...',
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Out',
+                        ),
                       ),
                       Text(
                         'Clear all',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.blue,
+                          fontFamily: 'Out',
                         ),
                       ),
                     ],

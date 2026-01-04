@@ -18,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
   bool _showSearchField = false;
 
   /// Показує поле пошуку з анімацією
@@ -29,7 +30,7 @@ class HomeScreenState extends State<HomeScreen> {
     // Автоматично фокусуємо поле пошуку
     Future.delayed(const Duration(milliseconds: 300), () {
       if (!mounted) return;
-      FocusScope.of(context).requestFocus(FocusNode());
+      FocusScope.of(context).requestFocus(_focusNode);
       _searchController.selection = TextSelection.fromPosition(
         TextPosition(offset: _searchController.text.length),
       );
@@ -78,7 +79,11 @@ class HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 20),
                   const Text(
                     'WORKSPACES',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Out',
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -105,12 +110,16 @@ class HomeScreenState extends State<HomeScreen> {
                           const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('NextGen'),
+                              const Text(
+                                'NextGen',
+                                style: TextStyle(fontFamily: 'Out'),
+                              ),
                               Text(
                                 'nextgen@gmail.com',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey,
+                                  fontFamily: 'Out',
                                 ),
                               ),
                             ],
@@ -169,6 +178,7 @@ class HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Out',
                 ),
               ),
               actions: const [
@@ -191,6 +201,7 @@ class HomeScreenState extends State<HomeScreen> {
                               flex: 4,
                               child: SearchFieldWidget(
                                 searchController: _searchController,
+                                focusNode: _focusNode,
                               ),
                             ),
 
