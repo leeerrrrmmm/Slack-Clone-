@@ -114,6 +114,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                   color: Colors.white,
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Out',
                 ),
               ),
               actions: [

@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 /// SearchFieldWidget is the widget that displays the search field.
 class SearchFieldWidget extends StatelessWidget {
+  /// The focus node for the search field.
+  final FocusNode focusNode;
+
   /// Constructs a new SearchFieldWidget.
   const SearchFieldWidget({
     required this.searchController,
+    required this.focusNode,
     super.key,
   });
 
@@ -41,8 +45,10 @@ class SearchFieldWidget extends StatelessWidget {
               ),
               Expanded(
                 child: TextFormField(
+                  focusNode: focusNode,
                   style: const TextStyle(
                     color: Color(0xFFDACFDA),
+                    fontFamily: 'Out',
                   ),
                   controller: searchController,
                   cursorColor: const Color(0xFFDACFDA),
@@ -50,6 +56,7 @@ class SearchFieldWidget extends StatelessWidget {
                     hintText: "Search",
                     hintStyle: TextStyle(
                       color: Color(0xFFDACFDA),
+                      fontFamily: 'Out',
                     ),
                     border: InputBorder.none,
                   ),

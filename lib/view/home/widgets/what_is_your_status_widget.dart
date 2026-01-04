@@ -31,6 +31,7 @@ class WhatIsYourStatusWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
+                fontFamily: 'Out',
               ),
             ),
           ],

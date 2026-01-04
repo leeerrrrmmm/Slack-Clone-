@@ -40,6 +40,7 @@ class UserInfoModalSheet extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Out',
                 ),
               ),
             ],
@@ -81,6 +82,7 @@ class UserInfoModalSheet extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Out',
                           ),
                         ),
                         Text(
@@ -88,6 +90,7 @@ class UserInfoModalSheet extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
+                            fontFamily: 'Out',
                           ),
                         ),
                       ],
@@ -170,6 +173,7 @@ class UserInfoModalSheet extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Out',
                         ),
                       ),
                       Container(
@@ -186,6 +190,7 @@ class UserInfoModalSheet extends StatelessWidget {
                               color: Colors.white,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Out',
                             ),
                           ),
                         ),

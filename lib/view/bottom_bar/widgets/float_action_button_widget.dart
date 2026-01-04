@@ -22,7 +22,7 @@ class FloatActionButtonWidget extends StatefulWidget {
 }
 
 class _FloatActionButtonWidgetState extends State<FloatActionButtonWidget> {
-  static const Duration _animationDuration = Duration(milliseconds: 800);
+  static const Duration _animationDuration = Duration(milliseconds: 300);
   bool _showContent = false;
 
   @override

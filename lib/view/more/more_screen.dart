@@ -34,6 +34,7 @@ class _MoreScreenState extends State<MoreScreen> {
                   color: Colors.white,
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
+                  fontFamily: 'Out',
                 ),
               ),
               actions: [

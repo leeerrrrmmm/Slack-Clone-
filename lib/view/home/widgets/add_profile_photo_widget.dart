@@ -44,6 +44,7 @@ class AddProfilePhotoWidget extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Out',
                   ),
                 ),
               ],
@@ -53,10 +54,11 @@ class AddProfilePhotoWidget extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               child: Text(
                 textAlign: TextAlign.center,
-                '''Help your teammates know that they’re talking to the right person.''',
+                '''Help your teammates know that they're talking to the right person.''',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
+                  fontFamily: 'Out',
                 ),
               ),
             ),

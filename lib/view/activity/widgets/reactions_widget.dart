@@ -52,6 +52,7 @@ class ReactionsWidget extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               color: Colors.grey.shade500,
+              fontFamily: 'Out',
             ),
           ),
 
