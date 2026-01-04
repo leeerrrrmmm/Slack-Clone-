@@ -23,7 +23,6 @@ class BottomButtons extends StatelessWidget {
       margin: const EdgeInsets.only(
         left: 10,
         right: 20,
-        top: 10,
         bottom: 10,
       ),
       width: double.infinity,

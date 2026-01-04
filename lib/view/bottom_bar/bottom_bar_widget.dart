@@ -4,6 +4,7 @@ import 'package:slaac/view/activity/activity_screen.dart';
 import 'package:slaac/view/bottom_bar/widgets/bottom_bar_item.dart';
 import 'package:slaac/view/bottom_bar/widgets/bottom_buttons.dart';
 import 'package:slaac/view/bottom_bar/widgets/bottom_search_button.dart';
+import 'package:slaac/view/bottom_bar/widgets/float_action_button_widget.dart';
 import 'package:slaac/view/dirrect/dirrect_screen.dart';
 import 'package:slaac/view/home/home_screen.dart';
 import 'package:slaac/view/more/more_screen.dart';
@@ -23,6 +24,8 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
       GlobalKey<HomeScreenState>();
 
   final List<Widget> _pages = [];
+
+  bool isClicked = false;
 
   @override
   void initState() {
@@ -82,6 +85,14 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatActionButtonWidget(
+        isClicked: isClicked,
+        onPressed: () {
+          setState(() {
+            isClicked = !isClicked;
+          });
+        },
       ),
     );
   }
