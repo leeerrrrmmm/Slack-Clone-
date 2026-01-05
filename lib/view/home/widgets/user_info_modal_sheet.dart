@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:slaac/view/home/widgets/add_profile_photo_widget.dart';
+import 'package:slaac/view/home/widgets/show_preferences_modal_sheet.dart';
 import 'package:slaac/view/home/widgets/user_quick_action_button.dart';
 import 'package:slaac/view/home/widgets/what_is_your_status_widget.dart';
 
@@ -61,7 +64,7 @@ class UserInfoModalSheet extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(right: 15),
+                      margin: const EdgeInsets.only(right: 19),
                       height: 50,
                       width: 50,
                       decoration: BoxDecoration(
@@ -74,6 +77,7 @@ class UserInfoModalSheet extends StatelessWidget {
                         size: 40,
                       ),
                     ),
+
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -105,15 +109,21 @@ class UserInfoModalSheet extends StatelessWidget {
                 const WhatIsYourStatusWidget(),
 
                 /// Pause notifications
-                const UserQuickActionButton(
+                UserQuickActionButton(
                   iconData: Icons.notifications_off_outlined,
                   title: 'Pause notifications',
+                  onTap: () {
+                    log('Pause notifications');
+                  },
                 ),
 
                 /// Set yourself as away
-                const UserQuickActionButton(
+                UserQuickActionButton(
                   iconData: Icons.person_outline,
                   title: 'Set yourseld as away',
+                  onTap: () {
+                    log('Set yourseld as away');
+                  },
                 ),
 
                 /// Divider
@@ -123,27 +133,44 @@ class UserInfoModalSheet extends StatelessWidget {
                 ),
 
                 /// Invitation to connect
-                const UserQuickActionButton(
+                UserQuickActionButton(
                   iconData: Icons.notifications_off_outlined,
                   title: 'Invitation to connect',
+                  onTap: () {
+                    log('Invitation to connect');
+                  },
                 ),
 
                 /// View profile
-                const UserQuickActionButton(
+                UserQuickActionButton(
                   iconData: Icons.person_outline_outlined,
                   title: 'View profile',
+                  onTap: () {
+                    log('View profile');
+                  },
                 ),
 
                 /// Notifications
-                const UserQuickActionButton(
+                UserQuickActionButton(
                   iconData: Icons.phone_android_sharp,
                   title: 'Notifications',
+                  onTap: () {
+                    log('Notifications');
+                  },
                 ),
 
                 /// Preferences
-                const UserQuickActionButton(
+                UserQuickActionButton(
                   iconData: Icons.settings_outlined,
                   title: 'Preferences',
+                  onTap: () {
+                    log('Preferences');
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (_) => const ShowPreferencesModalSheet(),
+                    );
+                  },
                 ),
 
                 /// Divider
