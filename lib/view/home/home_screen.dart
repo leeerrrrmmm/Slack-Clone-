@@ -110,8 +110,8 @@ class HomeScreenState extends State<HomeScreen> {
                           const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'NextGen',
+                              Text(
+                                'IntoSoft',
                                 style: TextStyle(fontFamily: 'Out'),
                               ),
                               Text(
@@ -173,7 +173,7 @@ class HomeScreenState extends State<HomeScreen> {
               toolbarHeight: 80,
               leadingWidth: 80,
               title: const Text(
-                'NEXTGEN',
+                'INTOSOFT',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
