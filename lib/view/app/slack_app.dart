@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:slaac/view/bottom_bar/bottom_bar_widget.dart';
+import 'package:slaac/view/splash/splash_screen.dart';
 
 /// SlackApp is the main entry point for the Slack app.
 class SlackApp extends StatelessWidget {
@@ -16,7 +16,7 @@ class SlackApp extends StatelessWidget {
         fontFamily: 'Out',
       ),
       //TODO: Change to OnboardingScreen when it is implemented
-      home: const BottomBarWidget(),
+      home: const SplashScreen(),
     );
   }
 }

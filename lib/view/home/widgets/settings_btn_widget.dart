@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:slaac/view/home/widgets/settings_button_model.dart';
+import 'package:slaac/view/home/widgets/settings_button.dart';
 import 'package:slaac/view/home/widgets/user_quick_action_button.dart';
 
 /// A widget that displays a settings button.

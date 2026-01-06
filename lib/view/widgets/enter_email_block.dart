@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slaac/data/services/user_services/register_user_service.dart';
 import 'package:slaac/view/ready_to_launch_screen/ready_to_launch_screen.dart';
 
 /// EnterEmailBlock is the widget that builds the email input block.
@@ -6,14 +7,17 @@ class EnterEmailBlock extends StatefulWidget {
   /// Constructs a new EnterEmailBlock.
   const EnterEmailBlock({
     required TextEditingController emailController,
+    required TextEditingController passwordController,
     required BuildContext context,
 
     /// The email controller.
     super.key,
   }) : _emailController = emailController,
+       _passwordController = passwordController,
        _context = context;
 
   final TextEditingController _emailController;
+  final TextEditingController _passwordController;
   final BuildContext _context;
 
   @override
@@ -143,19 +147,35 @@ class _EnterEmailBlockState extends State<EnterEmailBlock> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: () {
-                      // Сначала закрываем модальное окно
+                    onPressed: () async {
                       Navigator.of(context).pop();
-                      // Then navigate to the new screen using the parent context */
-                      Future.delayed(const Duration(milliseconds: 300), () {
+
+                      if (!widget._context.mounted) return;
+
+                      try {
+                        await RegisterUserService().registerUser(
+                          email: widget._emailController.text,
+                          password: widget._passwordController.text,
+                        );
+
                         if (!widget._context.mounted) return;
-                        Navigator.of(widget._context).pushAndRemoveUntil(
+
+                        await Navigator.of(widget._context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (_) => const ReadyToLaunchScreen(),
                           ),
                           (_) => false,
                         );
-                      });
+                      } catch (e) {
+                        if (!widget._context.mounted) return;
+
+                        ScaffoldMessenger.of(widget._context).showSnackBar(
+                          SnackBar(
+                            content: Text('Registration failed: $e'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     },
                     child: const Text(
                       'Open email app',
@@ -217,6 +237,25 @@ class _EnterEmailBlockState extends State<EnterEmailBlock> {
           controller: widget._emailController,
           decoration: InputDecoration(
             hintText: 'Enter your email',
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.grey.shade400),
+            ),
+          ),
+          keyboardType: TextInputType.emailAddress,
+        ),
+        TextField(
+          controller: widget._passwordController,
+          decoration: InputDecoration(
+            hintText: 'Enter your password',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.grey.shade300),

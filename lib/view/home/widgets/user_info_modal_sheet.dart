@@ -1,235 +1,48 @@
-import 'dart:developer';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:slaac/view/home/widgets/add_profile_photo_widget.dart';
-import 'package:slaac/view/home/widgets/show_preferences_modal_sheet.dart';
-import 'package:slaac/view/home/widgets/user_quick_action_button.dart';
-import 'package:slaac/view/home/widgets/what_is_your_status_widget.dart';
+import 'package:slaac/data/model/user_model.dart';
+import 'package:slaac/data/services/user_services/fetch_user_service.dart';
+import 'package:slaac/view/home/widgets/all_info_from_user_modal_sheet.dart';
 
 /// UserInfoModalSheet is the widget that displays the user info modal sheet.
-class UserInfoModalSheet extends StatelessWidget {
+class UserInfoModalSheet extends StatefulWidget {
   /// Constructs a new UserInfoModalSheet.
   const UserInfoModalSheet({
     super.key,
   });
 
   @override
+  State<UserInfoModalSheet> createState() => _UserInfoModalSheetState();
+}
+
+class _UserInfoModalSheetState extends State<UserInfoModalSheet> {
+  final FetchUserService _fetchUserService = FetchUserService();
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.9,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      child: Column(
-        spacing: 5,
-        children: [
-          /// Back Button and Title
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back),
-              ),
-              const SizedBox(width: 100),
-              const Text(
-                'User Info',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Out',
-                ),
-              ),
-            ],
-          ),
-          // Divider
-          const Divider(
-            height: 0.4,
-            color: Color(0xFFECECEC),
-          ),
+    // Get email from FirebaseAuth as fallback
+    final currentUserEmail = FirebaseAuth.instance.currentUser?.email ?? '';
 
-          /// User Info
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: Column(
-              spacing: 15,
-              children: [
-                /// User Photo And Name
-                Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 19),
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.person,
-                        color: Colors.black,
-                        size: 40,
-                      ),
-                    ),
+    return FutureBuilder<UserModel>(
+      future: _fetchUserService.fetchCurrentUser(),
+      builder: (_, snapshot) {
+        // Use email from FirebaseAuth if user data is not loaded yet
+        final userData = snapshot.data;
+        final displayEmail = userData != null
+            ? userData.email
+            : (currentUserEmail.isNotEmpty
+                  ? currentUserEmail
+                  : 'No email found');
 
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'John Doe',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Out',
-                          ),
-                        ),
-                        Text(
-                          'john.doe@example.com',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: 'Out',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+        final displayName = userData != null && userData.name.isNotEmpty
+            ? userData.name
+            : 'User';
 
-                /// Add ProfilePhoto Button
-                const AddProfilePhotoWidget(),
-
-                /// What's Your Status?
-                const WhatIsYourStatusWidget(),
-
-                /// Pause notifications
-                UserQuickActionButton(
-                  iconData: Icons.notifications_off_outlined,
-                  title: 'Pause notifications',
-                  onTap: () {
-                    log('Pause notifications');
-                  },
-                ),
-
-                /// Set yourself as away
-                UserQuickActionButton(
-                  iconData: Icons.person_outline,
-                  title: 'Set yourseld as away',
-                  onTap: () {
-                    log('Set yourseld as away');
-                  },
-                ),
-
-                /// Divider
-                const Divider(
-                  height: 0.4,
-                  color: Color(0xFFECECEC),
-                ),
-
-                /// Invitation to connect
-                UserQuickActionButton(
-                  iconData: Icons.notifications_off_outlined,
-                  title: 'Invitation to connect',
-                  onTap: () {
-                    log('Invitation to connect');
-                  },
-                ),
-
-                /// View profile
-                UserQuickActionButton(
-                  iconData: Icons.person_outline_outlined,
-                  title: 'View profile',
-                  onTap: () {
-                    log('View profile');
-                  },
-                ),
-
-                /// Notifications
-                UserQuickActionButton(
-                  iconData: Icons.phone_android_sharp,
-                  title: 'Notifications',
-                  onTap: () {
-                    log('Notifications');
-                  },
-                ),
-
-                /// Preferences
-                UserQuickActionButton(
-                  iconData: Icons.settings_outlined,
-                  title: 'Preferences',
-                  onTap: () {
-                    log('Preferences');
-                    showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (_) => const ShowPreferencesModalSheet(),
-                    );
-                  },
-                ),
-
-                /// Divider
-                const Divider(
-                  height: 0.4,
-                  color: Color(0xFFECECEC),
-                ),
-
-                /// 30 days free trial
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  width: double.infinity,
-                  height: 46,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffF5F5F5).withValues(alpha: 0.5),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: const Color(0xffECECEC),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      /// 30 days left of free trial
-                      const Text(
-                        '30 days left of free trial',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Out',
-                        ),
-                      ),
-                      Container(
-                        width: 50,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF441045),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Pro',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Out',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        return AllInfoFromUserInfoModalSheet(
+          displayName: displayName,
+          displayEmail: displayEmail,
+        );
+      },
     );
   }
 }

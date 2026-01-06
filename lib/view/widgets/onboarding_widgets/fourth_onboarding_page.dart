@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slaac/view/widgets/enter_email_block.dart';
+import 'package:slaac/view/widgets/sign_in_modal_sheet.dart';
 
 /// BuildPageWidget is the widget that builds the page view.
 class FourthOnboardingPage extends StatefulWidget {
@@ -17,7 +18,7 @@ class FourthOnboardingPage extends StatefulWidget {
 
 class _FourthOnboardingPageState extends State<FourthOnboardingPage> {
   final TextEditingController _emailController = TextEditingController();
-
+  final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -92,7 +93,7 @@ class _FourthOnboardingPageState extends State<FourthOnboardingPage> {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  //TODO:Close modal bottom sheet
+                                  Navigator.of(context).pop();
                                 },
                                 icon: const Icon(Icons.close),
                               ),
@@ -113,6 +114,7 @@ class _FourthOnboardingPageState extends State<FourthOnboardingPage> {
                           ),
                           // Email input BLOCK
                           EnterEmailBlock(
+                            passwordController: _passwordController,
                             emailController: _emailController,
                             context: context,
                           ),
@@ -123,7 +125,7 @@ class _FourthOnboardingPageState extends State<FourthOnboardingPage> {
                           ),
 
                           const Text(
-                            'Want to sign in GovSlack instead?',
+                            'Already have an account?',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -131,30 +133,46 @@ class _FourthOnboardingPageState extends State<FourthOnboardingPage> {
                             ),
                           ),
 
-                          /// GovSlack auth block
-                          Row(
-                            spacing: 10,
-                            children: [
-                              Container(
-                                width: 45,
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade300,
-                                  borderRadius: BorderRadius.circular(10),
+                          /// Sign in with password block
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              Future.delayed(
+                                const Duration(milliseconds: 300),
+                                () {
+                                  if (!context.mounted) return;
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (_) => const SignInModalSheet(),
+                                  );
+                                },
+                              );
+                            },
+                            child: Row(
+                              spacing: 10,
+                              children: [
+                                Container(
+                                  width: 45,
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade300,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Center(
+                                    child: Icon(Icons.lock),
+                                  ),
                                 ),
-                                child: const Center(
-                                  child: Icon(Icons.account_circle),
+                                const Text(
+                                  'Sign in with Password',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'Out',
+                                  ),
                                 ),
-                              ),
-                              const Text(
-                                'Sign in with GovSlack',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'Out',
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
