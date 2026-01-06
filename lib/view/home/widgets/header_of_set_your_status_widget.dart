@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:slaac/view/widgets/circular_custom_button.dart';
 
-/// HeaderOfSetYourStatusWidget is the widget that displays the header of set your status widget.
+/// HeaderOfSetYourStatusWidget is the widget that displays the header of set yor */
 class HeaderOfSetYourStatusWidget extends StatelessWidget {
   /// Constructor
   const HeaderOfSetYourStatusWidget({

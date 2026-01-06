@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slaac/view/home/widgets/settings_btn_widget.dart';
-import 'package:slaac/view/home/widgets/settings_button_model.dart';
+import 'package:slaac/view/home/widgets/settings_button.dart';
 
 /// PreferencesAllWidgetInfo is the widget that displays the preferences all widget info. */
 class PreferencesAllWidgetInfo extends StatelessWidget {
