@@ -36,7 +36,16 @@ class FetchUserService {
 
   /// Fetches all users from Firestore.
   Future<List<UserModel>> fetchAllUsers() async {
-    final users = await _firestore.collection('users').get();
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null) {
+      throw Exception('No authenticated user found');
+    }
+
+    final users = await _firestore
+        .collection('users')
+        .where('uid', isNotEqualTo: currentUser.uid)
+        .get();
 
     return users.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
   }
