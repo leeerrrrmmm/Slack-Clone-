@@ -1,24 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-/// RegisterUserService is the service for the register user.
+/// RegisterUserService is the service that registers a user in the database.
 class RegisterUserService {
-  /// The FirebaseFirestore instance.
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  /// The FirebaseAuth instance.
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  /// Minimum password length required by Firebase Auth.
   static const int _minPasswordLength = 6;
 
-  /// Registers a user.
+  /// Регистрирует пользователя с автоинкрементным id
   Future<void> registerUser({
     required String email,
     required String password,
   }) async {
     try {
-      // Validate email and password
+      // Валидация
       if (email.isEmpty || password.isEmpty) {
         throw Exception('Email and password cannot be empty');
       }
@@ -29,25 +25,38 @@ class RegisterUserService {
         );
       }
 
-     
-
+      // Создаём пользователя через Firebase Auth
       final cred = await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
 
       final user = cred.user;
+      if (user == null) throw Exception('User not created');
 
-      if (user == null) {
-        throw Exception('User not created');
-      }
+      // Ссылка на документ-счётчик пользователей
+      final counterRef = _firestore.collection('counters').doc('users');
 
-      await _firestore.collection('users').doc(user.uid).set({
-        'id': user.uid,
-        'uid': user.uid,
-        'email': email.trim(),
-        'name': '',
-        'createdAt': FieldValue.serverTimestamp(),
+      await _firestore.runTransaction((transaction) async {
+        final snap = await transaction.get(counterRef);
+
+        // Берём последний ID, если документа нет — 0
+        final int lastId = snap.data()?['last_id'] as int? ?? 0;
+        final int newId = lastId + 1;
+
+        // Обновляем счётчик
+        transaction.set(counterRef, {
+          'last_id': newId,
+        }, SetOptions(merge: true));
+
+        // Создаём документ пользователя с новым ID
+        transaction.set(_firestore.collection('users').doc(user.uid), {
+          'uid': user.uid,
+          'id': newId,
+          'email': email.trim(),
+          'name': '',
+          'createdAt': FieldValue.serverTimestamp(),
+        });
       });
     } on FirebaseAuthException catch (e) {
       throw Exception('Firebase Auth Error: ${e.message}');
