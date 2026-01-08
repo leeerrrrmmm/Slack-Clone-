@@ -1,18 +1,23 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:slaac/data/model/user_model.dart';
-import 'package:slaac/data/services/user_services/fetch_user_service.dart';
 import 'package:slaac/view/home/widgets/add_profile_photo_widget.dart';
-import 'package:slaac/view/home/widgets/all_info_from_user_info_modal_sheet.dart';
 import 'package:slaac/view/home/widgets/show_preferences_modal_sheet.dart';
 import 'package:slaac/view/home/widgets/user_quick_action_button.dart';
 import 'package:slaac/view/home/widgets/what_is_your_status_widget.dart';
 
-/// UserInfoModalSheet is the widget that displays the user info modal sheet.
-class UserInfoModalSheet extends StatelessWidget {
-  /// Constructs a new UserInfoModalSheet.
-  const UserInfoModalSheet({
+/// AllInfoFromUserInfoModalSheet is the widget that displays all the info from the user. */
+class AllInfoFromUserInfoModalSheet extends StatelessWidget {
+  /// The display name of the user.
+  final String displayName;
+
+  /// The display email of the user.
+  final String displayEmail;
+
+  /// Constructs a new AllInfoFromUserInfoModalSheet.
+  const AllInfoFromUserInfoModalSheet({
+    required this.displayName,
+    required this.displayEmail,
     super.key,
   });
 
@@ -81,20 +86,20 @@ class UserInfoModalSheet extends StatelessWidget {
                       ),
                     ),
 
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'John Doe',
-                          style: TextStyle(
+                          displayName,
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Out',
                           ),
                         ),
                         Text(
-                          'john.doe@example.com',
-                          style: TextStyle(
+                          displayEmail,
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
                             fontFamily: 'Out',
