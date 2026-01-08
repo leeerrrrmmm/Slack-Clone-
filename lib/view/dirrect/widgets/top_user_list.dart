@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slaac/data/model/user_model.dart';
 
 /// TopUserList is the widget that displays the top users of the app.
 class TopUserList extends StatelessWidget {
@@ -33,6 +34,7 @@ class TopUserList extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
+                      fontFamily: 'Out',
                     ),
                   ),
                 ),

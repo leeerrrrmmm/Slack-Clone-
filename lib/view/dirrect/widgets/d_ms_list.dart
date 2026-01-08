@@ -48,6 +48,7 @@ class DMsList extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Out',
                           ),
                         ),
                         Text(
@@ -55,6 +56,7 @@ class DMsList extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.grey.shade700,
+                            fontFamily: 'Out',
                           ),
                         ),
                       ],
@@ -71,6 +73,7 @@ class DMsList extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey.shade700,
+                        fontFamily: 'Out',
                       ),
                     ),
                   ],

@@ -51,6 +51,7 @@ class NextYouCould extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16.0,
+                  fontFamily: 'Out',
                 ),
               ),
               Text(
@@ -58,6 +59,7 @@ class NextYouCould extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 14.0,
+                  fontFamily: 'Out',
                 ),
               ),
             ],

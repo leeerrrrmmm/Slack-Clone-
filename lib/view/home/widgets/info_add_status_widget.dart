@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
-/// AddProfilePhotoWidget is the widget that displays the add profile photo widget. */
-class AddProfilePhotoWidget extends StatelessWidget {
-  /// Constructs a new AddProfilePhotoWidget.
-  const AddProfilePhotoWidget({
+/// InfoAddStatusWidget is the widget that displays the info add status widget.
+class InfoAddStatusWidget extends StatelessWidget {
+  /// Constructs a new InfoAddStatusWidget.
+  const InfoAddStatusWidget({
     super.key,
   });
 
@@ -16,7 +16,7 @@ class AddProfilePhotoWidget extends StatelessWidget {
         log('AddProfilePhotoWidget tapped');
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         width: double.infinity,
         height: 92,
         decoration: BoxDecoration(
@@ -34,13 +34,13 @@ class AddProfilePhotoWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.photo_camera,
+                  Icons.sentiment_satisfied_alt_outlined,
                   color: Colors.grey.shade800,
                   size: 20,
                 ),
                 const SizedBox(width: 10),
                 const Text(
-                  'Add Profile Photo',
+                  'Add the Status widget',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -54,7 +54,7 @@ class AddProfilePhotoWidget extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               child: Text(
                 textAlign: TextAlign.center,
-                '''Help your teammates know that they're talking to the right person.''',
+                '''Set and clear your status right from your\nmobile.''',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,

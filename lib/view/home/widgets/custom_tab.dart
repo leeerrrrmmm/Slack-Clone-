@@ -29,6 +29,7 @@ class CustomTab extends StatelessWidget {
               fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Color(0xFF5F5F5F),
+              fontFamily: 'Out',
             ),
           ),
         ],
