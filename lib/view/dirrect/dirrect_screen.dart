@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:slaac/view/dirrect/widgets/dirrect_info_main_widget.dart';
+import 'package:slaac/data/model/user_model.dart';
+import 'package:slaac/data/services/user_services/fetch_user_service.dart';
+import 'package:slaac/view/dirrect/widgets/d_ms_list.dart';
+import 'package:slaac/view/dirrect/widgets/top_user_list.dart';
 import 'package:slaac/view/home/widgets/user_info_button.dart';
 
 /// DirrectScreen is the screen that displays the direct messages of the app.
@@ -12,36 +15,90 @@ class DirrectScreen extends StatefulWidget {
 }
 
 class _DirrectScreenState extends State<DirrectScreen> {
+  Future<List<UserModel>>? _usersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _usersFuture = FetchUserService().fetchAllUsers();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const PopScope(
+    return PopScope(
       canPop: false,
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: CustomScrollView(
-          physics: BouncingScrollPhysics(),
-          slivers: <Widget>[
-            /// App Bar
-            SliverAppBar(
-              backgroundColor: Color(0xFF441045),
-              expandedHeight: 90.0,
-              toolbarHeight: 80,
-              leadingWidth: 80,
-              title: Text(
-                'DMs',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              actions: [
-                UserInfoButton(),
-              ],
-            ),
+        body: FutureBuilder<List<UserModel>>(
+          future: _usersFuture,
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-            DirrectMainInfoWidget(),
-          ],
+            if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.error_outline,
+                      size: 48,
+                      color: Colors.red,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Error: ${snapshot.error}',
+                      style: const TextStyle(color: Colors.red),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            final users = snapshot.data ?? [];
+
+            return CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: <Widget>[
+                /// App Bar
+                const SliverAppBar(
+                  backgroundColor: Color(0xFF441045),
+                  expandedHeight: 90.0,
+                  toolbarHeight: 80,
+                  leadingWidth: 80,
+                  title: Text(
+                    'DMs',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Out',
+                    ),
+                  ),
+                  actions: [
+                    UserInfoButton(),
+                  ],
+                ),
+
+                /// Users List
+                SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: TopUserList(users: users),
+                  ),
+                ),
+
+                /// DMs List
+                const SliverToBoxAdapter(
+                  child: DMsList(),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

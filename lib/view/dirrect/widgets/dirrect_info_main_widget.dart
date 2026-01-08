@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:slaac/data/model/user_model.dart';
 import 'package:slaac/view/dirrect/widgets/d_ms_list.dart';
 import 'package:slaac/view/dirrect/widgets/top_user_list.dart';
 
 /// DirrectMainInfoWidget is the widget that displays the main information of the dirrect screen. */
-class DirrectMainInfoWidget extends StatelessWidget {
+class DirrectInfoMainWidget extends StatelessWidget {
+  /// The list of users to display.
+  final List<UserModel> users;
+
   /// Constructs a new DirrectMainInfoWidget.
-  const DirrectMainInfoWidget({
+  const DirrectInfoMainWidget({
+    required this.users,
     super.key,
   });
 
@@ -16,13 +21,13 @@ class DirrectMainInfoWidget extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(top: 10),
         width: double.infinity,
-        child: const Column(
+        child: Column(
           children: [
             /// Users List
-            TopUserList(),
+            TopUserList(users: users),
 
             //DMs List
-            DMsList(),
+            const DMsList(),
           ],
         ),
       ),
