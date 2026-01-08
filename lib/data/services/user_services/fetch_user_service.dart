@@ -6,6 +6,7 @@ import 'package:slaac/data/model/user_model.dart';
 class FetchUserService {
   /// The FirebaseFirestore instance.
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   /// Fetches a user by uid.
   Future<UserModel> fetchCurrentUser() async {
@@ -34,9 +35,20 @@ class FetchUserService {
     return UserModel.fromJson(data);
   }
 
-  /// Fetches all users from Firestore.
+  /// Fetches all users from Firestore excluding the current authenticated user.
   Future<List<UserModel>> fetchAllUsers() async {
-    final users = await _firestore.collection('users').get();
+    final currentUser = _auth.currentUser;
+
+    if (currentUser == null) {
+      throw Exception('No authenticated user found');
+    }
+
+    final uid = currentUser.uid;
+
+    final users = await _firestore
+        .collection('users')
+        .where('uid', isNotEqualTo: uid)
+        .get();
 
     return users.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
   }
