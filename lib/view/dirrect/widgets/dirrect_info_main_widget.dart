@@ -8,9 +8,13 @@ class DirrectInfoMainWidget extends StatelessWidget {
   /// The list of users to display.
   final List<UserModel> users;
 
+  /// The current user.
+  final UserModel currentUser;
+
   /// Constructs a new DirrectMainInfoWidget.
   const DirrectInfoMainWidget({
     required this.users,
+    required this.currentUser,
     super.key,
   });
 
@@ -24,7 +28,7 @@ class DirrectInfoMainWidget extends StatelessWidget {
         child: Column(
           children: [
             /// Users List
-            TopUserList(users: users),
+            TopUserList(users: users, currentUser: currentUser),
 
             //DMs List
             const DMsList(),

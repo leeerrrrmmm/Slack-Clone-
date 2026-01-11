@@ -36,7 +36,24 @@ class FetchUserService {
   }
 
   /// Fetches all users from Firestore excluding the current authenticated user.
-  Future<List<UserModel>> fetchAllUsers() async {
+  //   Future<List<UserModel>> fetchAllUsers() async {
+  //     final currentUser = _auth.currentUser;
+
+  //     if (currentUser == null) {
+  //       throw Exception('No authenticated user found');
+  //     }
+
+  //     final uid = currentUser.uid;
+
+  //     final users = await _firestore
+  //         .collection('users')
+  //         .where('uid', isNotEqualTo: uid)
+  //         .get();
+
+  //     return users.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
+  //   }
+  /// Fetches all users from Firestore excluding the current authenticated user.
+  Stream<List<UserModel>> fetchAllUsers() {
     final currentUser = _auth.currentUser;
 
     if (currentUser == null) {
@@ -45,11 +62,13 @@ class FetchUserService {
 
     final uid = currentUser.uid;
 
-    final users = await _firestore
+    return _firestore
         .collection('users')
         .where('uid', isNotEqualTo: uid)
-        .get();
-
-    return users.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
+        .snapshots()
+        .map(
+          (event) =>
+              event.docs.map((doc) => UserModel.fromJson(doc.data())).toList(),
+        );
   }
 }
