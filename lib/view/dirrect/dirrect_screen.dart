@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:slaac/data/model/user_model.dart';
 import 'package:slaac/data/services/user_services/fetch_user_service.dart';
@@ -15,12 +17,25 @@ class DirrectScreen extends StatefulWidget {
 }
 
 class _DirrectScreenState extends State<DirrectScreen> {
-  Future<List<UserModel>>? _usersFuture;
+  Stream<List<UserModel>>? _usersStream;
+  UserModel? _currentUser;
 
   @override
   void initState() {
     super.initState();
-    _usersFuture = FetchUserService().fetchAllUsers();
+    _usersStream = FetchUserService().fetchAllUsers();
+    _loadCurrentUser();
+  }
+
+  Future<void> _loadCurrentUser() async {
+    try {
+      final curUser = await FetchUserService().fetchCurrentUser();
+      setState(() {
+        _currentUser = curUser;
+      });
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   @override
@@ -29,8 +44,9 @@ class _DirrectScreenState extends State<DirrectScreen> {
       canPop: false,
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: FutureBuilder<List<UserModel>>(
-          future: _usersFuture,
+        body: StreamBuilder<List<UserModel>>(
+          stream: _usersStream,
+          initialData: const [],
           builder: (_, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -88,7 +104,17 @@ class _DirrectScreenState extends State<DirrectScreen> {
                 SliverToBoxAdapter(
                   child: Container(
                     margin: const EdgeInsets.only(top: 10),
-                    child: TopUserList(users: users),
+                    child: TopUserList(
+                      currentUser:
+                          _currentUser ??
+                          UserModel(
+                            uid: '',
+                            name: 'Unknown',
+                            email: 'unknown@gmail.com',
+                            createdAt: DateTime.now(),
+                          ),
+                      users: users,
+                    ),
                   ),
                 ),
 
