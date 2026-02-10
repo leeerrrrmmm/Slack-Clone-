@@ -12,4 +12,7 @@ class Constants {
   static const Color backOnboardingColor = Color(0xFFF2EDE5);
 
   const Constants._();
+
+  /// The font size of the text.
+  static const int fontSizeMessage = 15;
 }

@@ -21,16 +21,23 @@ class _FourthOnboardingPageState extends State<FourthOnboardingPage> {
   final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            right: 24.0,
-            left: 24.0,
-            top: 60.0,
-          ),
-          child: RichText(
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height -
+              MediaQuery.of(context).padding.top -
+              MediaQuery.of(context).padding.bottom,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 24.0,
+                left: 24.0,
+                top: 60.0,
+              ),
+              child: RichText(
             text: const TextSpan(
               children: [
                 TextSpan(
@@ -52,19 +59,19 @@ class _FourthOnboardingPageState extends State<FourthOnboardingPage> {
                   ),
                 ),
               ],
+                ),
+              ),
             ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 85.0),
-          child: Image.asset(
-            'assets/images/foOnboarding.jpg',
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40.0),
-          child: GestureDetector(
-            onTap: () {
+            Padding(
+              padding: const EdgeInsets.only(left: 85.0),
+              child: Image.asset(
+                'assets/images/foOnboarding.jpg',
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40.0),
+              child: GestureDetector(
+                onTap: () {
               if (!context.mounted) {
                 return;
               } else {
@@ -203,7 +210,9 @@ class _FourthOnboardingPageState extends State<FourthOnboardingPage> {
             ),
           ),
         ),
-      ],
+          ],
+        ),
+      ),
     );
   }
 

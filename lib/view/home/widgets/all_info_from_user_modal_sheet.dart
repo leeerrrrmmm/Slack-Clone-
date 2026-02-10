@@ -7,12 +7,15 @@ import 'package:slaac/view/home/widgets/user_quick_action_button.dart';
 import 'package:slaac/view/home/widgets/what_is_your_status_widget.dart';
 
 /// AllInfoFromUserInfoModalSheet is the widget that displays all the info from the user. */
-class AllInfoFromUserInfoModalSheet extends StatelessWidget {
+class AllInfoFromUserModalSheet extends StatelessWidget {
+  /// Display name
   final String displayName;
+
+  /// Display email
   final String displayEmail;
 
   /// Constructs a new AllInfoFromUserInfoModalSheet.
-  const AllInfoFromUserInfoModalSheet({
+  const AllInfoFromUserModalSheet({
     required this.displayName,
     required this.displayEmail,
     super.key,

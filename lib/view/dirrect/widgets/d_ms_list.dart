@@ -1,88 +1,46 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:slaac/data/model/user_model.dart';
+import 'package:slaac/data/services/chat_service/chat_service.dart';
+import 'package:slaac/data/services/user_services/fetch_user_service.dart';
+import 'package:slaac/view/dirrect/widgets/chat_list_item.dart';
+import 'package:slaac/view/dirrect/widgets/circular_widget.dart';
+import 'package:slaac/view/dirrect/widgets/empty_widget.dart';
 
 /// DMsList is the widget that displays the list of DMs.
 class DMsList extends StatelessWidget {
+  /// Current user (for navigation to chat and displaying "you" name).
+  final UserModel? currentUser;
+
   /// Constructs a new DMsList.
   const DMsList({
     super.key,
+    this.currentUser,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: List.generate(
-          10,
-          (_) => Container(
-            padding: const EdgeInsets.only(
-              left: 10,
-              right: 10,
-            ),
-            width: double.infinity,
-            height: 80,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                /// DM Profile Picture
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey.shade200,
-                      ),
-                      child: const Icon(Icons.person, size: 40),
-                    ),
+    final chatService = ChatService();
+    final fetchUserService = FetchUserService();
 
-                    /// DM Name and Last Message
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'DM Name',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Out',
-                          ),
-                        ),
-                        Text(
-                          'Last Message',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey.shade700,
-                            fontFamily: 'Out',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+    return StreamBuilder<QuerySnapshot>(
+      stream: chatService.getUserChats(),
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) return const CircularWidget();
+        final chats = snapshot.data?.docs ?? [];
+        if (chats.isEmpty) return const EmptyWidget();
 
-                /// DM Time and Unread Messages
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Dec 31, 12:00',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade700,
-                        fontFamily: 'Out',
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+        return ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: chats.length,
+          itemBuilder: (_, index) => ChatListItem(
+            currentUser: currentUser,
+            chatDoc: chats[index],
+            fetchUserService: fetchUserService,
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

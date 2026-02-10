@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:slaac/view/dirrect/chat/widget/url_modal_sheet.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 /// ChatBubble is the widget that displays a single message in the chat.
 class ChatBubble extends StatelessWidget {
@@ -20,12 +22,46 @@ class ChatBubble extends StatelessWidget {
     required this.isCurrentUser,
     required this.messageId,
     required this.userId,
+
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    // //report message
+    final List<String> links = [
+      'google.com',
+      'youtube.com',
+      'facebook.com',
+      'twitter.com',
+      'instagram.com',
+      'linkedin.com',
+      'github.com',
+      'stackoverflow.com',
+      'reddit.com',
+      'pinterest.com',
+      'tiktok.com',
+      'twitch.tv',
+      'spotify.com',
+      'apple.com',
+      'microsoft.com',
+      'amazon.com',
+      'aliexpress.com',
+    ];
+
+    final bool isLink =
+        message.startsWith('http://') ||
+        message.startsWith('https://') ||
+        links.contains(message);
+
+    Uri normalizeUrl(String url) {
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        return Uri.parse('https://$url');
+      }
+
+      return Uri.parse(url);
+    }
+
+    //report message
     // void reportMessage(BuildContext context, String messageId, String userId) { */
     //   showDialog(
     //     context: context,
@@ -55,7 +91,7 @@ class ChatBubble extends StatelessWidget {
     //   );
     // }
 
-    // //block user
+    //block user
     // void blockUser(BuildContext context, String userId) {
     //   showDialog(
     //     context: context,
@@ -82,8 +118,7 @@ class ChatBubble extends StatelessWidget {
     //   );
     // }
 
-    /// show options
-
+    // show options
     // void showOptions(BuildContext context, String messageId, String userId) {
     //   showModalBottomSheet(
     //     context: context,
@@ -112,7 +147,7 @@ class ChatBubble extends StatelessWidget {
     //               },
     //             ),
 
-    //             //cancel button
+    //cancel button
     //             ListTile(
     //               leading: const Icon(Icons.cancel_sharp),
     //               title: const Text('Canсel'),
@@ -133,37 +168,62 @@ class ChatBubble extends StatelessWidget {
           return;
         } else {
           //TODO: show options
-          // showOptions(context, messageId, userId);
         }
       },
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.7,
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-        decoration: BoxDecoration(
-          color: isCurrentUser ? const Color(0xFF441045) : Colors.grey[200],
-          borderRadius: isCurrentUser
-              ? const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(4),
-                )
-              : const BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                  bottomLeft: Radius.circular(4),
-                ),
-        ),
-        child: Text(
-          message,
-          style: TextStyle(
-            fontSize: 15,
-            color: isCurrentUser ? Colors.white : Colors.black87,
-            fontFamily: 'Out',
-            height: 1.4,
+      child: GestureDetector(
+        onTap: () {
+          if (!isLink) return;
+
+          final wViewController = WebViewController()
+            ..setJavaScriptMode(JavaScriptMode.unrestricted)
+            ..loadRequest(normalizeUrl(message));
+
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (_) => UrlModalSheet(
+              isLink: isLink,
+              links: links,
+              controller: wViewController,
+              message: message,
+            ),
+          );
+        },
+
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+          decoration: BoxDecoration(
+            color: isCurrentUser ? const Color(0xFF441045) : Colors.grey[200],
+            borderRadius: isCurrentUser
+                ? const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(4),
+                  )
+                : const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
+                    bottomLeft: Radius.circular(4),
+                  ),
+          ),
+          child: Text(
+            message,
+            style: TextStyle(
+              fontSize: 15,
+              color:
+                  links.contains(message) ||
+                      message.startsWith('http://') ||
+                      message.startsWith('https://')
+                  ? Colors.blue
+                  : isCurrentUser
+                  ? Colors.white
+                  : Colors.black87,
+            ),
           ),
         ),
       ),

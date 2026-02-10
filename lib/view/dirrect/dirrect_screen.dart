@@ -119,8 +119,10 @@ class _DirrectScreenState extends State<DirrectScreen> {
                 ),
 
                 /// DMs List
-                const SliverToBoxAdapter(
-                  child: DMsList(),
+                SliverToBoxAdapter(
+                  child: DMsList(
+                    currentUser: _currentUser,
+                  ),
                 ),
               ],
             );
