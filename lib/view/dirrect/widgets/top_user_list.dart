@@ -20,7 +20,7 @@ class TopUserList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 120,
+      height: 60,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: users.length,
@@ -57,6 +57,7 @@ class TopUserList extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Out',
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),

@@ -25,6 +25,7 @@ class MessageListWidget extends StatelessWidget {
     required this.senderId,
     required this.receiverId,
     required this.scrollController,
+
     super.key,
   });
 

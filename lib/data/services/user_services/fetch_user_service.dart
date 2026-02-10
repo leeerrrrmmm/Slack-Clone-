@@ -8,6 +8,14 @@ class FetchUserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  /// Fetches a user by uid. Returns null if user not found.
+  Future<UserModel?> fetchUserByUid(String uid) async {
+    final doc = await _firestore.collection('users').doc(uid).get();
+    if (!doc.exists || doc.data() == null) return null;
+
+    return UserModel.fromJson(doc.data() ?? {});
+  }
+
   /// Fetches a user by uid.
   Future<UserModel> fetchCurrentUser() async {
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -50,7 +58,7 @@ class FetchUserService {
   //         .where('uid', isNotEqualTo: uid)
   //         .get();
 
-  //     return users.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
+  //     return users.docs.map((doc) => UserModel.fromJson(doc.data())).toList()
   //   }
   /// Fetches all users from Firestore excluding the current authenticated user.
   Stream<List<UserModel>> fetchAllUsers() {

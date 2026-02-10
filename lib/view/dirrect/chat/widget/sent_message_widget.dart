@@ -55,7 +55,7 @@ class SentMessageWidget extends StatelessWidget {
                     ),
                     decoration: InputDecoration(
                       hintText:
-                          'Message #${DateTime.now().toString().substring(0, 10)}',
+                          '''Message #${DateTime.now().toString().substring(0, 10)}''',
                       hintStyle: TextStyle(
                         color: Colors.grey[500],
                         fontFamily: 'Out',

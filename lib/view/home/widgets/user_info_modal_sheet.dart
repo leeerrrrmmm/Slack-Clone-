@@ -38,7 +38,7 @@ class _UserInfoModalSheetState extends State<UserInfoModalSheet> {
             ? userData.name
             : 'User';
 
-        return AllInfoFromUserInfoModalSheet(
+        return AllInfoFromUserModalSheet(
           displayName: displayName,
           displayEmail: displayEmail,
         );
