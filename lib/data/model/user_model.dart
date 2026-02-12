@@ -14,12 +14,16 @@ class UserModel {
   /// The created at date of the user.
   final DateTime createdAt;
 
+  /// Optional status string (e.g. "🌸 Tackling energizing spring tasks").
+  final String? status;
+
   /// Constructs a new UserModel.
   UserModel({
     required this.uid,
     required this.email,
     required this.name,
     required this.createdAt,
+    this.status,
   });
 
   /// Converts a JSON object to a UserModel object.
@@ -29,6 +33,7 @@ class UserModel {
       email: json['email'] as String,
       name: json['name'] as String,
       createdAt: (json['createdAt'] as Timestamp).toDate(),
+      status: json['status'] as String?,
     );
   }
 
@@ -39,6 +44,7 @@ class UserModel {
       'email': email,
       'name': name,
       'createdAt': createdAt,
+      if (status != null) 'status': status,
     };
   }
 }

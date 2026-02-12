@@ -36,6 +36,7 @@ class ChooseForCompanyOrSeasonalWidget extends StatelessWidget {
               ),
               ...statusModes.map(
                 (statusMode) => SetUpStatusMode(
+                  onSelected: statusMode.onSelected,
                   emoji: statusMode.emoji,
                   title: statusMode.title,
                 ),
