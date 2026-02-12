@@ -23,9 +23,9 @@ class ChatBubble extends StatelessWidget {
   const ChatBubble({
     required this.message,
     required this.isCurrentUser,
-    this.isRead = false,
     required this.messageId,
     required this.userId,
+    this.isRead = false,
     super.key,
   });
 

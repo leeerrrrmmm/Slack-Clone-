@@ -43,7 +43,6 @@ class ChatService {
       chatRoomId: chatRoomId,
       lastMessage: message,
       timestamp: timestamp,
-      incrementUnread: false,
     );
 
     await _updateUserChat(
@@ -106,7 +105,7 @@ class ChatService {
         .snapshots();
   }
 
-  /// Mark chat as read (set unread count to 0) and record read time for read receipts
+  /// Mark chat as read (set unread count to 0) and record read time for read receipts /
   Future<void> markChatAsRead(String chatRoomId) async {
     final userId = _auth.currentUser?.uid;
     if (userId == null) return;

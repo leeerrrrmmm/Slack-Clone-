@@ -15,6 +15,7 @@ class ProfilePhotoService {
     if (path == null) return null;
 
     final file = File(path);
+
     return await file.exists() ? file : null;
   }
 
