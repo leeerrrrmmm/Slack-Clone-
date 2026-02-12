@@ -18,7 +18,7 @@ class BottomSearchButton extends StatelessWidget {
       width: double.infinity,
       height: 60,
       decoration: BoxDecoration(
-        color: Colors.grey.shade200.withValues(alpha: 0.4),
+        color: Colors.grey.shade300,
         borderRadius: BorderRadius.circular(30),
       ),
       child: child,

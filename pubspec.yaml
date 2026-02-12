@@ -33,8 +33,10 @@ dependencies:
   firebase_core: ^4.3.0
   flutter:
     sdk: flutter
+  flutter_screenutil: ^5.9.3
   font_awesome_flutter: ^10.12.0
   image_picker: ^1.2.1
+  liquid_glass_renderer: ^0.2.0-dev.4
   path_provider: ^2.1.5
   shared_preferences: ^2.5.4
   shimmer: ^3.0.0
