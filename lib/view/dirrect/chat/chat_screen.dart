@@ -77,6 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    _markChatAsRead();
     myFocusNode.addListener(() {
       if (myFocusNode.hasFocus) {
         return;
@@ -84,6 +85,12 @@ class _ChatScreenState extends State<ChatScreen> {
         Future.delayed(const Duration(milliseconds: 500), _scrollToBottom);
       }
     });
+  }
+
+  void _markChatAsRead() {
+    final ids = [widget.senderId, widget.receiverId]..sort();
+    final chatRoomId = ids.join('_');
+    _chatService.markChatAsRead(chatRoomId);
   }
 
   @override

@@ -36,13 +36,14 @@ class ChatService {
         .collection('Messages')
         .add(messageModel.toMap());
 
-    // Update user chat for both users
+    // Update user chat for both users (receiver gets unread count +1)
     await _updateUserChat(
       userId: curUserId,
       otherUserId: receiverId,
       chatRoomId: chatRoomId,
       lastMessage: message,
       timestamp: timestamp,
+      incrementUnread: false,
     );
 
     await _updateUserChat(
@@ -51,6 +52,7 @@ class ChatService {
       chatRoomId: chatRoomId,
       lastMessage: message,
       timestamp: timestamp,
+      incrementUnread: true,
     );
   }
 
@@ -88,6 +90,49 @@ class ChatService {
         .snapshots();
   }
 
+  /// Get list of chats where current user has unread messages
+  Stream<QuerySnapshot> getUnreadUserChats() {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) {
+      throw Exception('No authenticated user found');
+    }
+
+    return _firestore
+        .collection('UserChats')
+        .doc(userId)
+        .collection('chats')
+        .where('unreadCount', isGreaterThan: 0)
+        .orderBy('unreadCount', descending: true)
+        .snapshots();
+  }
+
+  /// Mark chat as read (set unread count to 0) and record read time for read receipts
+  Future<void> markChatAsRead(String chatRoomId) async {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) return;
+
+    final batch = _firestore.batch();
+    final userChatRef = _firestore
+        .collection('UserChats')
+        .doc(userId)
+        .collection('chats')
+        .doc(chatRoomId);
+    batch.set(userChatRef, {'unreadCount': 0}, SetOptions(merge: true));
+
+    final chatRoomRef = _firestore.collection('ChatRooms').doc(chatRoomId);
+    batch.set(
+      chatRoomRef,
+      {'lastRead_$userId': FieldValue.serverTimestamp()},
+      SetOptions(merge: true),
+    );
+    await batch.commit();
+  }
+
+  /// Stream of chat room doc for read receipts (lastRead_{receiverId}).
+  Stream<DocumentSnapshot<Object?>> getChatRoomReadReceipts(String chatRoomId) {
+    return _firestore.collection('ChatRooms').doc(chatRoomId).snapshots();
+  }
+
   /// Update user chat
   Future<void> _updateUserChat({
     required String userId,
@@ -95,16 +140,21 @@ class ChatService {
     required String chatRoomId,
     required String lastMessage,
     required Timestamp timestamp,
+    bool incrementUnread = false,
   }) async {
+    final data = <String, dynamic>{
+      'otherUserId': otherUserId,
+      'lastMessage': lastMessage,
+      'lastTimestamp': timestamp,
+    };
+    if (incrementUnread) {
+      data['unreadCount'] = FieldValue.increment(1);
+    }
     await _firestore
         .collection('UserChats')
         .doc(userId)
         .collection('chats')
         .doc(chatRoomId)
-        .set({
-          'otherUserId': otherUserId,
-          'lastMessage': lastMessage,
-          'lastTimestamp': timestamp,
-        }, SetOptions(merge: true));
+        .set(data, SetOptions(merge: true));
   }
 }

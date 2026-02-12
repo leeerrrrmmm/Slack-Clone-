@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slaac/view/home/widgets/catch_up_threads_huddle_widget.dart';
+import 'package:slaac/view/home/widgets/drop_down_unread_d_ms_info_widget.dart';
 import 'package:slaac/view/home/widgets/drow_down_info_widget.dart';
 import 'package:slaac/view/home/widgets/next_you_could.dart';
 
@@ -50,12 +51,7 @@ class _MainInfoWidgetState extends State<MainInfoWidget> {
             ),
 
             //Unread messages(DMS) - ExpansionTile
-            DrowDownInfoWidget(
-              title: 'Unread (DMS)',
-              info: 'John Doe',
-              count: 4,
-              infoCount: 2,
-            ),
+            DrowDownUnreadDMsInfoWidget(title: 'Unread (DMS)'),
 
             // Divider
             Divider(
@@ -106,14 +102,6 @@ class _MainInfoWidgetState extends State<MainInfoWidget> {
             Divider(
               height: 0.4,
               color: Color(0xFFECECEC),
-            ),
-
-            //Unread messages(DMS) - ExpansionTile
-            DrowDownInfoWidget(
-              title: 'Direct Messages',
-              info: 'SasshaMozzherina',
-              count: 10,
-              infoCount: 0,
             ),
 
             // Divider

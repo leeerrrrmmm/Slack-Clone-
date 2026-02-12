@@ -1,13 +1,17 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:slaac/data/services/profile_service/profile_photo_service.dart';
 import 'package:slaac/view/home/widgets/add_profile_photo_widget.dart';
+import 'package:slaac/view/home/widgets/profile_icon_widget.dart';
+import 'package:slaac/view/home/widgets/profile_photo_widget.dart';
 import 'package:slaac/view/home/widgets/show_preferences_modal_sheet.dart';
 import 'package:slaac/view/home/widgets/user_quick_action_button.dart';
 import 'package:slaac/view/home/widgets/what_is_your_status_widget.dart';
 
 /// AllInfoFromUserInfoModalSheet is the widget that displays all the info from the user. */
-class AllInfoFromUserModalSheet extends StatelessWidget {
+class AllInfoFromUserModalSheet extends StatefulWidget {
   /// Display name
   final String displayName;
 
@@ -20,6 +24,34 @@ class AllInfoFromUserModalSheet extends StatelessWidget {
     required this.displayEmail,
     super.key,
   });
+
+  @override
+  State<AllInfoFromUserModalSheet> createState() =>
+      _AllInfoFromUserModalSheetState();
+}
+
+class _AllInfoFromUserModalSheetState extends State<AllInfoFromUserModalSheet> {
+  File? profilePhoto;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPhoto();
+  }
+
+  Future<void> _loadPhoto() async {
+    final photo = await ProfilePhotoService.getSavedPhoto();
+    if (photo != null) {
+      setState(() => profilePhoto = photo);
+    }
+  }
+
+  Future<void> _pickPhoto() async {
+    final photo = await ProfilePhotoService.pickAndSavePhoto();
+    if (photo != null) {
+      setState(() => profilePhoto = photo);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,26 +103,19 @@ class AllInfoFromUserModalSheet extends StatelessWidget {
                 /// User Photo And Name
                 Row(
                   children: [
-                    Container(
-                      margin: const EdgeInsets.only(right: 19),
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.person,
-                        color: Colors.black,
-                        size: 40,
-                      ),
-                    ),
+                    if (profilePhoto != null)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ProfilePhotoWidget(profilePhoto: profilePhoto),
+                      )
+                    else
+                      const ProfileIconWidget(),
 
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          displayName,
+                          widget.displayName,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -98,7 +123,7 @@ class AllInfoFromUserModalSheet extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          displayEmail,
+                          widget.displayEmail,
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
@@ -111,7 +136,9 @@ class AllInfoFromUserModalSheet extends StatelessWidget {
                 ),
 
                 /// Add ProfilePhoto Button
-                const AddProfilePhotoWidget(),
+                AddProfilePhotoWidget(
+                  onTap: _pickPhoto,
+                ),
 
                 /// What's Your Status?
                 const WhatIsYourStatusWidget(),

@@ -30,9 +30,7 @@ class MessageListWidget extends StatelessWidget {
   });
 
   void _scrollToBottom(ScrollController controller) {
-    if (!controller.hasClients) {
-      return;
-    }
+    if (!controller.hasClients) return;
     controller.animateTo(
       controller.position.maxScrollExtent,
       duration: const Duration(milliseconds: 300),
@@ -42,35 +40,48 @@ class MessageListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ids = [senderId, receiverId]..sort();
+    final chatRoomId = ids.join('_');
+
     return ColoredBox(
       color: Colors.white,
       child: StreamBuilder<QuerySnapshot>(
         stream: chatService.getMessages(senderId, receiverId),
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
-
           if (snapshot.hasError) {
             return ErrorChatWidget(error: snapshot.error);
           }
-
-          if (!snapshot.hasData || (snapshot.data?.docs.isEmpty ?? true)) {
+          final docs = snapshot.data?.docs;
+          if (docs == null || docs.isEmpty) {
             return const NoMessageYetWidget();
           }
 
-          final messages = snapshot.data?.docs ?? [];
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) => _scrollToBottom(scrollController),
+          );
 
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            _scrollToBottom(scrollController);
-          });
+          return StreamBuilder<DocumentSnapshot<Object?>>(
+            stream: chatService.getChatRoomReadReceipts(chatRoomId),
+            builder: (_, readSnapshot) {
+              DateTime? lastReadByReceiverAt;
+              if (readSnapshot.hasData) {
+                final data =
+                    readSnapshot.data?.data() as Map<String, dynamic>? ?? {};
+                final ts = data['lastRead_$receiverId'];
+                if (ts is Timestamp) lastReadByReceiverAt = ts.toDate();
+              }
 
-          return UserConversationWidget(
-            scrollController: scrollController,
-            messages: messages,
-            senderId: senderId,
+              return UserConversationWidget(
+                scrollController: scrollController,
+                messages: docs,
+                senderId: senderId,
+                receiverId: receiverId,
+                lastReadByReceiverAt: lastReadByReceiverAt,
+              );
+            },
           );
         },
       ),

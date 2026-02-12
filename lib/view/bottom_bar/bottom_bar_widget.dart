@@ -60,11 +60,29 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
     }
   }
 
+  /// При клике на любое место(если FAB открыт) - закрываем FAB
+  void _collapseFAB() {
+    if (!isClicked) return;
+    setState(() => isClicked = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: _pages[index],
+      body: Stack(
+        children: [
+          _pages[index],
+          if (isClicked)
+            ///При клике на любое место(если FAB открыт) - закрываем FAB
+            Positioned.fill(
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: _collapseFAB,
+              ),
+            ),
+        ],
+      ),
       bottomNavigationBar: Row(
         children: [
           Expanded(
