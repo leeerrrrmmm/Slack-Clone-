@@ -57,7 +57,8 @@ class ChatListItem extends StatelessWidget {
         final timeStr = lastTimestamp != null
             ? _formatTime(lastTimestamp.toDate())
             : '';
-        final isLoading = userSnapshot.connectionState == ConnectionState.waiting ||
+        final isLoading =
+            userSnapshot.connectionState == ConnectionState.waiting ||
             (!userSnapshot.hasData && !userSnapshot.hasError);
 
         return UserTileWIdget(

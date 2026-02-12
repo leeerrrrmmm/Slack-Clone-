@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:slaac/view/bottom_bar/widgets/huggle_or_channel_btn.dart';
+import 'package:slaac/view/navigation/widgets/huggle_or_channel_btn.dart';
 
 /// FloatActionButtonWidget is the widget that displays the floating action button. */
 class FloatActionButtonWidget extends StatefulWidget {
