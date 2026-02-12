@@ -51,7 +51,7 @@ class _MainInfoWidgetState extends State<MainInfoWidget> {
             ),
 
             //Unread messages(DMS) - ExpansionTile
-            DrowDownUnreadDMsInfoWidget(title: 'Unread (DMS)'),
+            DropDownUnreadDMsInfoWidget(title: 'Unread (DMS)'),
 
             // Divider
             Divider(

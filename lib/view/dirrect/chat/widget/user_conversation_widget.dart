@@ -23,7 +23,7 @@ class UserConversationWidget extends StatelessWidget {
   /// Sender ID (current user)
   final String senderId;
 
-  /// Receiver ID (other user) — used to read lastRead_{receiverId} for read receipts
+  /// Receiver ID (other user) — used to read lastRead_{receiverId} for read receipts /
   final String receiverId;
 
   /// When the receiver last read the chat (for showing dark checkmarks)

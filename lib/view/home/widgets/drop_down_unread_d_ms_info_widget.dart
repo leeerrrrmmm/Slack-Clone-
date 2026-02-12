@@ -6,7 +6,7 @@ import 'package:slaac/data/services/user_services/fetch_user_service.dart';
 import 'package:slaac/view/home/widgets/home_d_ms_list.dart';
 
 /// DrowDownInfoWidget is the widget that displays the unread information.
-class DrowDownUnreadDMsInfoWidget extends StatefulWidget {
+class DropDownUnreadDMsInfoWidget extends StatefulWidget {
   /// Title of the widget
   final String title;
 
@@ -14,19 +14,19 @@ class DrowDownUnreadDMsInfoWidget extends StatefulWidget {
   final IconData? icon;
 
   /// Constructs a new DrowDownUnreadDMsInfoWidget.
-  const DrowDownUnreadDMsInfoWidget({
+  const DropDownUnreadDMsInfoWidget({
     required this.title,
     this.icon,
     super.key,
   });
 
   @override
-  State<DrowDownUnreadDMsInfoWidget> createState() =>
-      _DrowDownUnreadDMsInfoWidgetState();
+  State<DropDownUnreadDMsInfoWidget> createState() =>
+      _DropDownUnreadDMsInfoWidgetState();
 }
 
-class _DrowDownUnreadDMsInfoWidgetState
-    extends State<DrowDownUnreadDMsInfoWidget> {
+class _DropDownUnreadDMsInfoWidgetState
+    extends State<DropDownUnreadDMsInfoWidget> {
   UserModel? _currentUser;
   @override
   void initState() {

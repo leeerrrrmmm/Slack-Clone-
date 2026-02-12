@@ -11,8 +11,9 @@ class Constants {
   /// The background color of the onboarding screen.
   static const Color backOnboardingColor = Color(0xFFF2EDE5);
 
-  const Constants._();
-
   /// The font size of the text.
   static const int fontSizeMessage = 15;
+
+  /// The color of the unread message count.
+  const Constants._();
 }

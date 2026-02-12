@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:slaac/data/model/user_model.dart';
 import 'package:slaac/view/dirrect/chat/chat_screen.dart';
 
-/// Compact row: avatar + nickname (together), then purple oval with unread count.
+/// Compact row: avatar + nickname (together), then purple oval with unread count. /
 class UnreadDMChatItem extends StatelessWidget {
+  /// Compact row: avatar + nickname (together), then purple oval with unread count. /
   const UnreadDMChatItem({
     required this.currentUser,
     required this.otherName,
@@ -13,10 +14,19 @@ class UnreadDMChatItem extends StatelessWidget {
     super.key,
   });
 
+  /// The current user. /
   final UserModel? currentUser;
+
+  /// The name of the other user. /
   final String otherName;
+
+  /// The ID of the other user. /
   final String otherUserId;
+
+  /// The email of the other user. /
   final String otherEmail;
+
+  /// The number of unread messages. /
   final int unreadCount;
 
   @override
