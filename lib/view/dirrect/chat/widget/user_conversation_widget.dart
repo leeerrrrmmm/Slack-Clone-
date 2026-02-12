@@ -9,6 +9,8 @@ class UserConversationWidget extends StatelessWidget {
     required this.scrollController,
     required this.messages,
     required this.senderId,
+    required this.receiverId,
+    this.lastReadByReceiverAt,
     super.key,
   });
 
@@ -18,8 +20,23 @@ class UserConversationWidget extends StatelessWidget {
   /// Messages
   final List<QueryDocumentSnapshot<Object?>> messages;
 
-  /// Sender ID
+  /// Sender ID (current user)
   final String senderId;
+
+  /// Receiver ID (other user) — used to read lastRead_{receiverId} for read receipts
+  final String receiverId;
+
+  /// When the receiver last read the chat (for showing dark checkmarks)
+  final DateTime? lastReadByReceiverAt;
+
+  static DateTime? _messageTime(Map<String, dynamic> data) {
+    final ts = data['timestamp'];
+    if (ts == null) return null;
+    if (ts is Timestamp) return ts.toDate();
+    if (ts is String) return DateTime.tryParse(ts);
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +49,12 @@ class UserConversationWidget extends StatelessWidget {
         final Map<String, dynamic> data =
             doc.data() as Map<String, dynamic>? ?? {};
         final bool isCurUser = data['senderId'] == senderId;
+        final msgTime = _messageTime(data);
+        final lastRead = lastReadByReceiverAt;
+        final isRead = isCurUser &&
+            lastRead != null &&
+            msgTime != null &&
+            !msgTime.isAfter(lastRead);
 
         return Padding(
           padding: const EdgeInsets.only(bottom: 8),
@@ -40,6 +63,7 @@ class UserConversationWidget extends StatelessWidget {
             child: ChatBubble(
               message: data['message'] as String? ?? '',
               isCurrentUser: isCurUser,
+              isRead: isRead,
               userId: data['senderId'] as String? ?? '',
               messageId: doc.id,
             ),

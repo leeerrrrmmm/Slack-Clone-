@@ -111,7 +111,7 @@ class HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'IntoSoft',
+                                'InfoSoft',
                                 style: TextStyle(fontFamily: 'Out'),
                               ),
                               Text(
@@ -157,9 +157,9 @@ class HomeScreenState extends State<HomeScreen> {
         ),
 
         backgroundColor: Colors.white,
-        body: CustomScrollView(
+        body: NestedScrollView(
           physics: const BouncingScrollPhysics(),
-          slivers: <Widget>[
+          headerSliverBuilder: (_, __) => [
             /// App Bar
             SliverAppBar(
               backgroundColor: const Color(0xFF441045),
@@ -173,7 +173,7 @@ class HomeScreenState extends State<HomeScreen> {
               toolbarHeight: 80,
               leadingWidth: 80,
               title: const Text(
-                'INTOSOFT',
+                'INFOSOFT',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -215,13 +215,8 @@ class HomeScreenState extends State<HomeScreen> {
                     : const SizedBox.shrink(),
               ),
             ),
-
-            /// Main Info Widget - Fixed container
-            const SliverFillRemaining(
-              hasScrollBody: false,
-              child: MainInfoWidget(),
-            ),
           ],
+          body: const MainInfoWidget(),
         ),
       ),
     );

@@ -10,6 +10,9 @@ class ChatBubble extends StatelessWidget {
   /// Whether the message is from the current user.
   final bool isCurrentUser;
 
+  /// Whether the message was read by the receiver (for sent messages).
+  final bool isRead;
+
   /// The id of the message.
   final String messageId;
 
@@ -20,9 +23,9 @@ class ChatBubble extends StatelessWidget {
   const ChatBubble({
     required this.message,
     required this.isCurrentUser,
+    this.isRead = false,
     required this.messageId,
     required this.userId,
-
     super.key,
   });
 
@@ -211,19 +214,38 @@ class ChatBubble extends StatelessWidget {
                     bottomLeft: Radius.circular(4),
                   ),
           ),
-          child: Text(
-            message,
-            style: TextStyle(
-              fontSize: 15,
-              color:
-                  links.contains(message) ||
-                      message.startsWith('http://') ||
-                      message.startsWith('https://')
-                  ? Colors.blue
-                  : isCurrentUser
-                  ? Colors.white
-                  : Colors.black87,
-            ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Flexible(
+                child: Text(
+                  message,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color:
+                        links.contains(message) ||
+                            message.startsWith('http://') ||
+                            message.startsWith('https://')
+                        ? Colors.blue
+                        : isCurrentUser
+                        ? Colors.white
+                        : Colors.black87,
+                  ),
+                ),
+              ),
+              if (isCurrentUser) ...[
+                const SizedBox(width: 6),
+                Icon(
+                  Icons.done_all,
+                  size: 16,
+                  color: isRead
+                      ? Colors.white
+                      : Colors.white.withValues(alpha: 0.65),
+                ),
+              ],
+            ],
           ),
         ),
       ),

@@ -1,20 +1,20 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 /// AddProfilePhotoWidget is the widget that displays the add profile photo widget. */
 class AddProfilePhotoWidget extends StatelessWidget {
+  /// The function to call when the widget is tapped.
+  final void Function()? onTap;
+
   /// Constructs a new AddProfilePhotoWidget.
   const AddProfilePhotoWidget({
+    required this.onTap,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        log('AddProfilePhotoWidget tapped');
-      },
+      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10),
         width: double.infinity,
