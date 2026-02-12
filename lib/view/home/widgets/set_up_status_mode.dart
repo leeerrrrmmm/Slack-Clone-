@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:slaac/data/model/selected_status.dart';
-import 'package:slaac/data/services/user_services/set_up_user_status.dart';
+import 'package:slaac/data/services/user_services/set_up_user_status_service.dart';
 
 /// SetUpStatusMode is the widget that displays the set up status mode.
 class SetUpStatusMode extends StatefulWidget {

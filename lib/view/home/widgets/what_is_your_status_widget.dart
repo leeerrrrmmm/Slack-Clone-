@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:slaac/data/model/selected_status.dart';
 import 'package:slaac/data/services/user_services/fetch_user_service.dart';
-import 'package:slaac/data/services/user_services/set_up_user_status.dart';
+import 'package:slaac/data/services/user_services/set_up_user_status_service.dart';
 import 'package:slaac/view/home/widgets/choose_for_company_or_seasonal_widget.dart';
 import 'package:slaac/view/home/widgets/header_of_set_your_status_widget.dart';
 import 'package:slaac/view/home/widgets/info_add_status_widget.dart';
