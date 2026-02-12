@@ -37,6 +37,7 @@ class _DropDownUnreadDMsInfoWidgetState
   Future<void> _laodCurUser() async {
     try {
       final curUser = await FetchUserService().fetchCurrentUser();
+      if (!mounted) return;
       setState(() {
         _currentUser = curUser;
       });
