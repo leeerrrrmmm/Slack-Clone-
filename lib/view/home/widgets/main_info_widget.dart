@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:slaac/view/home/widgets/catch_up_threads_huddle_widget.dart';
+import 'package:slaac/view/home/widgets/drop_down_channel_info.dart';
 import 'package:slaac/view/home/widgets/drop_down_unread_d_ms_info_widget.dart';
 import 'package:slaac/view/home/widgets/drow_down_info_widget.dart';
 import 'package:slaac/view/home/widgets/next_you_could.dart';
@@ -89,15 +90,8 @@ class _MainInfoWidgetState extends State<MainInfoWidget> {
               color: Color(0xFFECECEC),
             ),
 
-            //Unread messages(DMS) - ExpansionTile
-            DrowDownInfoWidget(
-              title: 'Channels',
-              info: 'andoid-general',
-              count: 4,
-              infoCount: 20,
-              icon: Icons.tag,
-            ),
-
+            /// Channels - ExpansionTile
+            DropDownChannelInfo(title: 'Channels'),
             // Divider
             Divider(
               height: 0.4,

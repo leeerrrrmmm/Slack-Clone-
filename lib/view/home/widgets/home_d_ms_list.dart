@@ -29,7 +29,7 @@ class HomeDMsList extends StatelessWidget {
       builder: (_, snapshot) {
         if (!snapshot.hasData) return const CircularWidget();
         final chats = snapshot.data?.docs ?? [];
-        if (chats.isEmpty) return const EmptyWidget();
+        if (chats.isEmpty) return const EmptyWidget(message: 'No  yet');
 
         return ListView.builder(
           shrinkWrap: true,
