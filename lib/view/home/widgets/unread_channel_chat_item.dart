@@ -30,7 +30,7 @@ class UnreadChannelChatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = channelDoc.data() as Map<String, dynamic>? ?? {};
-    // Channel doc comes from collection 'channels' — document ID is the channelId.
+    // Channel doc comes from collection 'channels' — document ID is the channelId./
     final channelId = channelDoc.id;
     final name = data['channelName'] as String? ?? channelName;
     final members = data['members'] as List<dynamic>?;
@@ -41,7 +41,8 @@ class UnreadChannelChatItem extends StatelessWidget {
     final channelLastMessage =
         lastMsg ?? data['channelLastMessage'] as String? ?? '';
     final lastTs = data['lastMessageTimestamp'] as Timestamp?;
-    final channelLastMessageTimestamp = lastTs ??
+    final channelLastMessageTimestamp =
+        lastTs ??
         data['channelLastMessageTimestamp'] as Timestamp? ??
         Timestamp.now();
     final channelLastMessageSender =
@@ -53,16 +54,14 @@ class UnreadChannelChatItem extends StatelessWidget {
         data['channelLastMessageSenderName'] as String? ??
         '';
     final lastEmail = data['lastMessageSenderEmail'] as String?;
-    final channelLastMessageSenderEmail = lastEmail ??
-        data['channelLastMessageSenderEmail'] as String? ??
-        '';
+    final channelLastMessageSenderEmail =
+        lastEmail ?? data['channelLastMessageSenderEmail'] as String? ?? '';
     final unreadCountsMap = data['unreadCounts'] as Map<String, dynamic>?;
     final currentUid = currentUser?.uid;
     final unreadCount = currentUid != null
         ? (unreadCountsMap?[currentUid] as int? ?? 0)
         : (data['unreadCount'] as int? ?? 0);
-    final channelDescription =
-        data['channelDescription'] as String? ?? '';
+    final channelDescription = data['channelDescription'] as String? ?? '';
     final channelImageUrl = data['channelImageUrl'] as String?;
 
     return Material(
@@ -95,15 +94,7 @@ class UnreadChannelChatItem extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(Icons.person, color: Colors.black),
-                  ),
+                  const Icon(Icons.lock_outline, color: Colors.black),
                   const SizedBox(width: 12),
                   Text(
                     name,

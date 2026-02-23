@@ -234,6 +234,23 @@ class _BottomBarWidgetState extends State<BottomBarWidget> {
       body: Stack(
         children: [
           _pages[index],
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 100,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade300.withValues(alpha: 0.5),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+            ),
+          ),
           if (isClicked)
             Positioned.fill(
               child: GestureDetector(

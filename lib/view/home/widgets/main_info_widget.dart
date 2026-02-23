@@ -152,6 +152,7 @@ class _MainInfoWidgetState extends State<MainInfoWidget> {
                 ],
               ),
             ),
+            SizedBox(height: 80),
           ],
         ),
       ),

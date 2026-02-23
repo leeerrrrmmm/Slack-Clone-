@@ -68,6 +68,15 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
     _markChannelAsRead();
   }
 
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getChannelStream(
+    String channelId,
+  ) {
+    return FirebaseFirestore.instance
+        .collection('channels')
+        .doc(channelId)
+        .snapshots();
+  }
+
   void _markChannelAsRead() {
     _channelService.markChannelAsRead(widget.channelId);
   }
@@ -101,10 +110,10 @@ class _ChannelChatScreenState extends State<ChannelChatScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => ChannelInfoModalSheet(
+        channelId: widget.channelId,
         channelName: widget.channelName,
         channelDescription: widget.channelDescription,
         channelImageUrl: widget.channelImageUrl,
-        memberIds: widget.channelMembers,
       ),
     );
   }

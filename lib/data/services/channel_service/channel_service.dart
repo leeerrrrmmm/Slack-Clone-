@@ -97,6 +97,7 @@ class ChannelService {
     return 'Unknown';
   }
 
+  // ignore: comment_references
   /// Mark channel as read for current user (unreadCounts[uid] = 0).
   Future<void> markChannelAsRead(String channelId) async {
     final userId = _auth.currentUser?.uid;
@@ -108,7 +109,7 @@ class ChannelService {
     }, SetOptions(merge: true));
   }
 
-  /// Send message: add to channel messages, update last message and unreadCounts.
+  /// Send message: add to channel messages, update last message and unreadCounts. /
   Future<void> sendMessageToChannel(
     String channelId,
     String message, {
@@ -157,7 +158,7 @@ class ChannelService {
   /// Add a new member to a channel.
   Future<void> addNewMemnerToChannel(
     String channelId,
-    String newMemberId,
+    List<String> newMemberIds,
   ) async {
     final curUser = _auth.currentUser;
     if (curUser == null) {
@@ -165,11 +166,17 @@ class ChannelService {
     }
 
     final channelRef = _firestore.collection('channels').doc(channelId);
-    await channelRef.set({
-      'members': FieldValue.arrayUnion([newMemberId]),
-      'unreadCounts.$newMemberId': 0,
+
+    final Map<String, dynamic> updateData = {
+      'members': FieldValue.arrayUnion(newMemberIds),
       'lastTimestamp': FieldValue.serverTimestamp(),
-    }, SetOptions(merge: true));
+    };
+
+    for (final uid in newMemberIds) {
+      updateData['unreadCounts.$uid'] = 0;
+    }
+
+    await channelRef.set(updateData, SetOptions(merge: true));
   }
 
   /// Delete channel.
