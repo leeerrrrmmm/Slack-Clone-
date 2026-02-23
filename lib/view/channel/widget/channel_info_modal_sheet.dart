@@ -1,93 +1,63 @@
-// ignore_for_file: avoid_returning_widgets
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:slaac/data/model/user_model.dart';
 import 'package:slaac/data/services/user_services/fetch_user_service.dart';
+import 'package:slaac/view/channel/add_people_to_channel_screen.dart';
 
-/// Modal sheet with channel info: name, description, image, members list.
-/// Styled for light theme (Slack-like).
-class ChannelInfoModalSheet extends StatefulWidget {
-  /// Channel name.
+/// ChannelInfoModalSheet is the modal sheet that displays the channel info.
+class ChannelInfoModalSheet extends StatelessWidget {
+  /// Channel ID.
+  final String channelId;
+
+  /// Channel Name.
   final String channelName;
 
-  /// Channel description.
+  /// Channel Description.
   final String channelDescription;
 
-  /// Optional image URL (e.g. from storage). If null, shows placeholder.
+  /// Channel Image URL.
   final String? channelImageUrl;
-
-  /// Member user IDs to resolve to names.
-  final List<String> memberIds;
 
   /// Constructs a new ChannelInfoModalSheet.
   const ChannelInfoModalSheet({
+    required this.channelId,
     required this.channelName,
     required this.channelDescription,
     this.channelImageUrl,
-    required this.memberIds,
     super.key,
   });
-
-  @override
-  State<ChannelInfoModalSheet> createState() => _ChannelInfoModalSheetState();
-}
-
-class _ChannelInfoModalSheetState extends State<ChannelInfoModalSheet> {
-  final FetchUserService _fetchUserService = FetchUserService();
-  List<UserModel?> _members = [];
-  bool _loading = true;
-
-  static const Color _surface = Colors.white;
-  static const Color _divider = Color(0xFFECECEC);
-  static const Color _textPrimary = Color(0xFF1D1C1D);
-  static const Color _textSecondary = Color(0xFF616061);
-  static const Color _accent = Color(0xFF441045);
-
-  @override
-  void initState() {
-    super.initState();
-    _loadMembers();
-  }
-
-  Future<void> _loadMembers() async {
-    final list = <UserModel?>[];
-    for (final uid in widget.memberIds) {
-      final user = await _fetchUserService.fetchUserByUid(uid);
-      list.add(user);
-    }
-    if (mounted) {
-      setState(() {
-        _members = list;
-        _loading = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.85,
       decoration: const BoxDecoration(
-        color: _surface,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: Column(
         children: [
-          _buildHandle(),
+          const _HandleBar(),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeader(),
-                  const Divider(height: 24, color: _divider),
-                  _buildDescription(),
-                  const Divider(height: 24, color: _divider),
-                  _buildMembersSection(),
+                  _ChannelHeader(
+                    channelName: channelName,
+                    channelImageUrl: channelImageUrl,
+                  ),
+                  const SizedBox(height: 16),
+                  _ChannelDescriptionCard(description: channelDescription),
+                  const SizedBox(height: 16),
+                  _MemberList(channelId: channelId),
+                  const SizedBox(height: 16),
+                  _NonMembersList(
+                    channelId: channelId,
+                    channelName: channelName,
+                    channelDescription: channelDescription,
+                  ),
                 ],
               ),
             ),
@@ -96,8 +66,14 @@ class _ChannelInfoModalSheetState extends State<ChannelInfoModalSheet> {
       ),
     );
   }
+}
 
-  Widget _buildHandle() {
+/// Top handle for modal
+class _HandleBar extends StatelessWidget {
+  const _HandleBar();
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 12, bottom: 8),
       child: Center(
@@ -105,100 +81,97 @@ class _ChannelInfoModalSheetState extends State<ChannelInfoModalSheet> {
           width: 36,
           height: 4,
           decoration: BoxDecoration(
-            color: _divider,
+            color: const Color(0xFFECECEC),
             borderRadius: BorderRadius.circular(2),
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildHeader() {
-    final url = widget.channelImageUrl;
-    final hasImage = url != null && url.isNotEmpty;
+/// Channel header: image + name
+class _ChannelHeader extends StatelessWidget {
+  final String channelName;
+  final String? channelImageUrl;
+
+  const _ChannelHeader({required this.channelName, this.channelImageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    const size = 72.0;
+    final hasImage =
+        channelImageUrl != null && (channelImageUrl?.isNotEmpty ?? false);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildChannelImage(hasImage ? url : null),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: hasImage
+              ? Image.network(
+                  channelImageUrl ?? '',
+                  width: size,
+                  height: size,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) =>
+                      const _PlaceholderIImage(size: size),
+                )
+              : const _PlaceholderIImage(size: size),
+        ),
         const SizedBox(width: 16),
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.channelName,
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
-                  color: _textPrimary,
-                  fontFamily: 'Out',
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                '# ${widget.memberIds.length} members',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: _textSecondary,
-                  fontFamily: 'Out',
-                ),
-              ),
-            ],
+          child: Text(
+            channelName,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF1D1C1D),
+            ),
           ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildChannelImage(String? imageUrl) {
-    const size = 72.0;
+class _PlaceholderIImage extends StatelessWidget {
+  final double size;
+  const _PlaceholderIImage({required this.size});
 
-    if (imageUrl != null && imageUrl.isNotEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.network(
-          imageUrl,
-          width: size,
-          height: size,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => _placeholderImage(size),
-        ),
-      );
-    }
-
-    return _placeholderImage(size);
-  }
-
-  Widget _placeholderImage(double size) {
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: _accent.withValues(alpha: 0.12),
+        color: const Color(0xFF441045).withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Icon(
         Icons.tag_rounded,
         size: 36,
-        color: _accent.withValues(alpha: 0.8),
+        color: const Color(0xFF441045).withValues(alpha: 0.8),
       ),
     );
   }
+}
 
-  Widget _buildDescription() {
-    final desc = widget.channelDescription.trim();
-    if (desc.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.only(bottom: 8),
-        child: Text(
-          'No description',
-          style: TextStyle(
-            fontSize: 14,
-            color: _textSecondary,
-            fontStyle: FontStyle.italic,
-            fontFamily: 'Out',
-          ),
+/// Card with channel description
+class _ChannelDescriptionCard extends StatelessWidget {
+  final String description;
+
+  const _ChannelDescriptionCard({required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    if (description.trim().isEmpty) {
+      return const Text(
+        'No description',
+        style: TextStyle(
+          fontSize: 14,
+          color: Color(0xFF616061),
+          fontStyle: FontStyle.italic,
         ),
       );
     }
@@ -211,81 +184,78 @@ class _ChannelInfoModalSheetState extends State<ChannelInfoModalSheet> {
           style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w600,
-            color: _textSecondary,
-            fontFamily: 'Out',
+            color: Color(0xFF616061),
           ),
         ),
         const SizedBox(height: 8),
         Text(
-          desc,
+          description,
           style: const TextStyle(
             fontSize: 15,
-            color: _textPrimary,
+            color: Color(0xFF1D1C1D),
             height: 1.4,
-            fontFamily: 'Out',
           ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildMembersSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+/// List of current members
+class _MemberList extends StatelessWidget {
+  final String channelId;
+  const _MemberList({required this.channelId});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+      stream: FirebaseFirestore.instance
+          .collection('channels')
+          .doc(channelId)
+          .snapshots(),
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final membersIds = List<String>.from(
+          (snapshot.data?.data()?['members'] as List<dynamic>?) ?? [],
+        );
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Members',
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: _textSecondary,
-                fontFamily: 'Out',
+                color: Color(0xFF616061),
               ),
             ),
-            Text(
-              '${_members.length}',
-              style: const TextStyle(
-                fontSize: 13,
-                color: _textSecondary,
-                fontFamily: 'Out',
+            const SizedBox(height: 12),
+            ...membersIds.map(
+              (uid) => FutureBuilder<UserModel?>(
+                future: FetchUserService().fetchUserByUid(uid),
+                builder: (_, userSnap) {
+                  if (!userSnap.hasData) return const SizedBox();
+                  final user = userSnap.data;
+
+                  return _MemberTile(user: user);
+                },
               ),
             ),
           ],
-        ),
-        const SizedBox(height: 12),
-        if (_loading)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 24),
-            child: Center(child: CircularProgressIndicator()),
-          )
-        else
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: _members.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 4),
-            itemBuilder: (_, index) {
-              final user = _members[index];
-
-              return _MemberTile(user: user);
-            },
-          ),
-      ],
+        );
+      },
     );
   }
 }
 
+/// Tile for single member
 class _MemberTile extends StatelessWidget {
-  const _MemberTile({this.user});
-
   final UserModel? user;
-
-  static const Color _tileBg = Color(0xFFF8F8F8);
-  static const Color _textPrimary = Color(0xFF1D1C1D);
-  static const Color _textSecondary = Color(0xFF616061);
+  const _MemberTile({this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -295,8 +265,9 @@ class _MemberTile extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
-        color: _tileBg,
+        color: const Color(0xFFF8F8F8),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -310,7 +281,6 @@ class _MemberTile extends StatelessWidget {
                 color: Color(0xFF441045),
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
-                fontFamily: 'Out',
               ),
             ),
           ),
@@ -324,8 +294,6 @@ class _MemberTile extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
-                    color: _textPrimary,
-                    fontFamily: 'Out',
                   ),
                 ),
                 if (email.isNotEmpty)
@@ -333,8 +301,7 @@ class _MemberTile extends StatelessWidget {
                     email,
                     style: const TextStyle(
                       fontSize: 13,
-                      color: _textSecondary,
-                      fontFamily: 'Out',
+                      color: Color(0xFF616061),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -343,6 +310,87 @@ class _MemberTile extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// List of non-members + button to add new
+class _NonMembersList extends StatelessWidget {
+  final String channelId;
+  final String channelName;
+  final String channelDescription;
+
+  const _NonMembersList({
+    required this.channelId,
+    required this.channelName,
+    required this.channelDescription,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<UserModel>>(
+      stream: FetchUserService().fetchAllUsers(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return const SizedBox();
+
+        final allUsers = snapshot.data ?? [];
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Non-members',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF616061),
+              ),
+            ),
+            const SizedBox(height: 8),
+            ...allUsers.take(5).map((u) => _MemberTile(user: u)),
+            const SizedBox(height: 12),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AddPeopleToChannelScreen(
+                      channelId: channelId,
+                      channelName: channelName,
+                      channelDescription: channelDescription,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF441045),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add, color: Colors.white),
+                    SizedBox(width: 4),
+                    Text(
+                      'Add new members',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

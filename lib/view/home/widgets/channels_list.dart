@@ -9,9 +9,14 @@ import 'package:slaac/view/home/widgets/unread_channels_row.dart';
 
 /// ChannelsList displays all channels for the current user.
 class ChannelsList extends StatelessWidget {
+  /// Current user.
   final UserModel? currentUser;
 
-  const ChannelsList({super.key, this.currentUser});
+  /// Constructs a new ChannelsList.
+  const ChannelsList({
+    required this.currentUser,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

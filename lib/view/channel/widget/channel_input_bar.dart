@@ -27,7 +27,7 @@ class ChannelInputBar extends StatelessWidget {
           horizontal: 12,
           vertical: 10,
         ),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           border: Border(
             top: BorderSide(color: _border, width: 0.5),
@@ -72,7 +72,11 @@ class ChannelInputBar extends StatelessWidget {
                 child: const SizedBox(
                   width: 44,
                   height: 44,
-                  child: Icon(Icons.send_rounded, color: Colors.white, size: 22),
+                  child: Icon(
+                    Icons.send_rounded,
+                    color: Colors.white,
+                    size: 22,
+                  ),
                 ),
               ),
             ),

@@ -20,7 +20,6 @@ class SlackApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           fontFamily: 'Out',
         ),
-        //TODO: Change to OnboardingScreen when it is implemented
         home: const SplashScreen(),
       ),
     );

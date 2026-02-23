@@ -27,7 +27,6 @@ class TopUserList extends StatelessWidget {
         itemBuilder: (_, index) {
           return InkWell(
             onTap: () {
-              //TODO: Open chat screen
               Navigator.push(
                 context,
                 MaterialPageRoute(

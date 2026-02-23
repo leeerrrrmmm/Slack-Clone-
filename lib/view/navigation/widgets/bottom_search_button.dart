@@ -14,7 +14,7 @@ class BottomSearchButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(right: 10, top: 10, bottom: 10),
+      margin: const EdgeInsets.only(right: 10, top: 10, bottom: 14),
       width: double.infinity,
       height: 60,
       decoration: BoxDecoration(
